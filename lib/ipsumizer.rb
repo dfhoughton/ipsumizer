@@ -8,7 +8,8 @@ class Ipsumizer
   DEFAULT_PREFIX = 4
 
   def initialize( sentences, prefix: DEFAULT_PREFIX, sentencer: DEFAULT_SENTENCER )
-    @prefix = prefix
+    @prefix = prefix.to_i
+    fail "prefix length must be non-negative: #{prefix}" unless prefix > 0
     @sentencer = sentencer
     @transitions = {}
     if sentences.is_a? String
@@ -19,8 +20,8 @@ class Ipsumizer
     sentences.each do |s|
       key = ''
       i = 0
-      (0...s.length).each do |i|
-        nxt = if i === s.length
+      (0..s.length).each do |i|
+        nxt = if i == s.length
           nil
         else
           s[i]
